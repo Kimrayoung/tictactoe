@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TicTacToc</title>
+
+    <link rel="stylesheet" href="css/reset.css">
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            width: 600px;
+            height: 600px;
+            display: grid;
+            grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+        }
+        .cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 6px solid #a8a8a8;
+            font-weight: bold;
+            font-size: 10rem;
+        }
+        .cell-01,
+        .cell-02,
+        .cell-03 {
+            border-top: none;
+        }
+        .cell-01,
+        .cell-04,
+        .cell-07 {
+            border-left: none;
+        }
+        .cell-03,
+        .cell-06,
+        .cell-09 {
+            border-right: none;
+        }
+        .cell-07,
+        .cell-08,
+        .cell-09 {
+            border-bottom: none;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal_overlay {
+            background-color: rgba(0, 0, 0, 0.6);
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+        }
+        .modal_content {
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 50px 100px;
+            text-align: center;
+            position: relative;
+            border-radius: 10px;
+            width: 20vw;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+            font-size: 5rem;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="cell cell-01"></div>
+    <div class="cell cell-02"></div>
+    <div class="cell cell-03"></div>
+    <div class="cell cell-04"></div>
+    <div class="cell cell-05"></div>
+    <div class="cell cell-06"></div>
+    <div class="cell cell-07"></div>
+    <div class="cell cell-08"></div>
+    <div class="cell cell-09"></div>
+</div>
+
+<div class="modal hidden">
+    <div class="modal_overlay"></div>
+    <div class="modal_content">
+        <h1>Game Over!</h1>
+        <button class="modal_replay">다시하기</button>
+    </div>
+</div>
+
+<script>
+  (function () {
+    function isDone() {
+      // 2차원 배열의 값들이 모두 같은 값이면 게임이 끝남
+      const checkCase = [
+        ['.cell-01', '.cell-02', '.cell-03'],
+        ['.cell-04', '.cell-05', '.cell-06'],
+        ['.cell-07', '.cell-08', '.cell-09'],
+        ['.cell-01', '.cell-04', '.cell-07'],
+        ['.cell-02', '.cell-05', '.cell-08'],
+        ['.cell-03', '.cell-06', '.cell-09'],
+        ['.cell-01', '.cell-05', '.cell-09'],
+        ['.cell-03', '.cell-05', '.cell-07'],
+      ];
+
+      for (let i = 0; i < checkCase.length; i++) {
+        let values = '';
+        for (let j = 0; j < checkCase[i].length; j++) {
+          values += document.querySelector(checkCase[i][j]).textContent;
+        }
+
+        if (values === 'XXX' || values === 'OOO') {
+          return true;
+        }
+      }
+    }
+
+    function createToggleMarker() {
+      const x = { marker: 'X', color: 'red' };
+      const o = { marker: 'O', color: 'blue' };
+      let currentMarker = x;
+
+      return function () {
+        currentMarker = (currentMarker.marker === 'O') ? x : o;
+        return currentMarker;
+      }
+    }
+    const toggleMarker = createToggleMarker();
+
+    const container = document.querySelector('.container');
+    container.addEventListener('click', function (e) {
+      const cell = e.target;
+      if (cell.textContent === 'X' || cell.textContent === 'O') {
+        return;
+      }
+
+      const marker = toggleMarker();
+      cell.textContent = marker.marker;
+      cell.style = 'color: ' + marker.color;
+
+      if (isDone()) {
+        const modal = document.querySelector('.modal');
+        modal.classList.remove('hidden');
+      }
+    });
+
+    const modalReplay = document.querySelector('.modal_replay');
+    modalReplay.addEventListener('click', function () {
+      const modal = document.querySelector('.modal');
+      modal.classList.add('hidden');
+
+      const cells = document.querySelectorAll('.cell');
+      for (let i = 0; i < cells.length; i++) {
+        const cell = cells[i];
+        cell.textContent = '';
+      }
+
+      // 게임 재시작시 'O'로 시작하도록 호출
+      // 의도가 드러나지 않는 코드라서 별로 좋은 방법은 아님
+      // 나중에 다시 보면 이거 왜 호출 했는지 헷갈리거나 기억 못함
+      // 이 소스를 아예 모르는 사람이 보면 의도를 파악하기 힘듬
+      toggleMarker();
+    })
+  })();
+</script>
+</body>
+</html>

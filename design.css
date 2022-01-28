@@ -1,0 +1,44 @@
+body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container {
+    width: 600px;
+    height: 600px;
+    display: grid;
+    grid-template: repeat(3, 1fr)/ repeat(3, 1fr);
+}
+.cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 6px solid #a8a8a8;
+    font-weight: bold;
+    font-size: 10rem;
+}
+.cell-01,
+.cell-02,
+.cell-03 {
+    border-top: none;
+}
+.cell-01,
+.cell-04,
+.cell-07 {
+    border-left: none;
+}
+.cell-03,
+.cell-06,
+.cell-09 {
+    border-right: none;
+}
+.cell-07,
+.cell-08,
+.cell-09 {
+    border-bottom: none;
+}
+
+
+
