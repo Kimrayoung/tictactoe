@@ -7,3 +7,4 @@
 2. 이렇게 생긴 9개의 칸 위에는 1P O, 2p X를 번갈아가면서 그림
 3. 먼저 O나 X를 3개가 직선으로 이어지게 만들면 승리
 
+<img width="817" alt="스크린샷 2022-01-30 오후 11 56 58" src="https://user-images.githubusercontent.com/66238470/151704964-bf2a3e04-cd7f-4546-ba20-9b76f73fb956.png">
